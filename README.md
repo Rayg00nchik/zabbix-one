@@ -1,4 +1,4 @@
-<img src="https://github.com/Rayg00nchik/zabbix-one/blob/main/.github/Icons/workflow.png" align="right" />
+<img src="https://github.com/Rayg00nchik/zabbix-one/blob/main/.github/Icons/system_2.png" align="right" />
 
 # Zabbix Monitoring Templates and Tools 
 [![Zabbix](https://github.com/Rayg00nchik/zabbix-one/blob/main/.github/Icons/badge.svg)](https://github.com/zabbix/)
