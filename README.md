@@ -13,7 +13,7 @@ The main ideas are following:
 - saving and updating unique templates that you can't find when you really need it right now
 - saving IT-engineers' time for deploying and maintaining enterprise monitoring system using Zabbix
 
-So, you can easily use the provided templates as a basis and modify them for their own purposes making the monitoring process more convenient and simpler.
+So, you can easily use the provided templates as a basis and modify them for your own purposes making the monitoring process more convenient and simpler.
 Despite the fact that it is assumed that you have been already familiar with the Zabbix monitoring system, each template has a description and installation instructions. 
   
 ### Additional Information
