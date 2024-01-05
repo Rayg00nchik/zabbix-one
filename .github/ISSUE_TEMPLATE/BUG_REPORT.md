@@ -1,6 +1,7 @@
+--
 name: Bug Report
 title: "bug"
-
+--
 
 ## Bug Report
 
