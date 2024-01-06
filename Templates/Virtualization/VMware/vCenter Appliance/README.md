@@ -4,7 +4,9 @@
 ## Overview
 
 A simple template to monitor status of vCenter Appliance Components by Zabbix that works without any external scripts.
+<p>
 The template uses vCenter REST API instead of SNMP to obtain data.
+</p>
 
 ## Requirements
 
@@ -20,7 +22,7 @@ This template has been tested on:
 > No additional configuration is needed
 
 ## Setup
-
+#
 1. Create a vCenter read-only user to obtain specific information:
 - Open you vCenter via `http(s)://<vcenter_fqdn>/ui/`
 - Create a new role in vCenter and new group or user (optionaly) under "Administration" section
@@ -48,7 +50,7 @@ This template has been tested on:
 4. Link the template to host created early.
 
 ### Macros used
-
+#
 |Name|Descriptionion|Default|
 |----|-----------|-------|
 |{$VCENTER_URL_SESSION}|<p>vCenter Url to obtain authentification token (value)</p>|https://<vcenter_fqdn>/rest/com/vmware/cis/session|
@@ -65,8 +67,12 @@ This template has been tested on:
 |{$VMWARE.URL}|<p>VMware service - vCenter SDK URL</p>|https://<vcenter_fqdn>/sdk|
 |{$VMWARE.USERNAME}|<p>VMware service user name</p>|<username>|
 
-### Items
+### Template links
+#
+There are no template links in this template.
 
+### Items
+#
 |Name|Descriptionion|Type|Key and additional info|
 |----|-----------|----|-----------------------|
 |vCenter Appliance Database Storage Status|<p>Getting appliance database storage status</p>|`SCRIPT`|<p>vcenter.appliance.database.storage.status</p>|
@@ -80,7 +86,7 @@ This template has been tested on:
 |vCenter Appliance System Status|<p>Getting appliance system health status</p>|`SCRIPT`|<p>vcenter.appliance.system.status</p>|
 
 ### Triggers
-
+#
 |Name|Descriptionion|Expression|Severity|Dependencies and additional info|
 |----|-----------|----------|--------|--------------------------------|
 |vCenter Appliance Database Storage is not Healthy|<p>Check the vCenter Appliance Database Storage please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.database.storage.status,#3,"eq","green")=0`|High|**Depends on**:<br><ul><li>Unable connect to vCenter Appliance</li></ul>|
@@ -94,7 +100,7 @@ This template has been tested on:
 
 
 ## Feedback
-
+#
 Please report any issues with the template [`here`](https://github.com/Rayg00nchik/zabbix-one/issues/new?assignees=&labels=bug&template=BUG_REPORT.md&title=Issues%3A+Bug+Report)
 
 You can give feedback [`here`](mailto:rayg00nchik@gmail.com)
