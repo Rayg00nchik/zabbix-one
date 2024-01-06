@@ -63,9 +63,9 @@ This template has been tested on:
 |{$VMWARE.APP.SWAP.STATUS.URL}|<p>vCenter Appliance swap status url</p>|https://<vcenter_fqdn>/rest/appliance/health/swap|
 |{$VMWARE.APP.SYSTEM.LASTCHECK.STATUS.URL}|<p>vCenter Appliance system last check url</p>|https://<vcenter_fqdn>/rest/appliance/health/system/lastcheck|
 |{$VMWARE.APP.SYSTEM.STATUS.URL}|<p>vCenter Appliance system status url</p>|https://<vcenter_fqdn>/rest/appliance/health/system|
-|{$VMWARE.PASSWORD}|<p>VMware service user password</p>|<password>|
+|{$VMWARE.PASSWORD}|<p>VMware service user password</p>|password|
 |{$VMWARE.URL}|<p>VMware service - vCenter SDK URL</p>|https://<vcenter_fqdn>/sdk|
-|{$VMWARE.USERNAME}|<p>VMware service user name</p>|<username>|
+|{$VMWARE.USERNAME}|<p>VMware service user name</p>|username|
 
 ### Template links
 #
@@ -89,13 +89,13 @@ There are no template links in this template.
 #
 |Name|Descriptionion|Expression|Severity|Dependencies and additional info|
 |----|-----------|----------|--------|--------------------------------|
-|vCenter Appliance Database Storage is not Healthy|<p>Check the vCenter Appliance Database Storage please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.database.storage.status,#3,"eq","green")=0`|High|**Depends on**:<br><ul><li>Unable connect to vCenter Appliance</li></ul>|
-|vCenter Appliance Load is not Healthy|<p>Check the vCenter Appliance Load please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.load.status,#3,"eq","green")=0`|High|**Depends on**:<br><ul><li>Unable connect to vCenter Appliance</li></ul>|
-|vCenter Appliance Memory Status is not Healthy|<pCheck the vCenter Appliance Memory please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.memory.status,#3,"eq","green")=0`|High|**Depends on**:<br><ul><li>Unable connect to vCenter Appliance</li></ul>|
-|vCenter Appliance Services Status is not Healthy|<p>Check the vCenter Appliance Services please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.services.status,#3,"eq","green")=0`|High|**Depends on**:<br><ul><li>Unable connect to vCenter Appliance</li></ul>|
-|vCenter Appliance Software Packages Updates Status is not Healthy|<p>Check the vCenter Appliance Software Packages please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.software.packages.updates.status,#3,"eq","green")=0`|High|**Depends on**:<br><ul><li>Unable connect to vCenter Appliance</li></ul>|
-|vCenter Appliance Storage Status is not Healthy|<p>Check the vCenter Appliance Storage please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.storage.status,#3,"eq","green")=0'`|High|**Depends on**:<br><ul><li>Unable connect to vCenter Appliance</li></ul>|
-|vCenter Appliance Swap Status is not Healthy|<p>Check the vCenter Appliance Swap please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.swap.status,#3,"eq","green")=0`|High|**Depends on**:<br><ul><li>Unable connect to vCenter Appliance</li></ul>|
+|vCenter Appliance Database Storage is not Healthy|<p>Check the vCenter Appliance Database Storage please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.database.storage.status,#3,"eq","green")=0`|High|**Depends on**:<p><ul><li>Unable connect to vCenter Appliance</li></ul>|
+|vCenter Appliance Load is not Healthy|<p>Check the vCenter Appliance Load please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.load.status,#3,"eq","green")=0`|High|**Depends on**:<p><ul><li>Unable connect to vCenter Appliance</li></ul>|
+|vCenter Appliance Memory Status is not Healthy|<pCheck the vCenter Appliance Memory please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.memory.status,#3,"eq","green")=0`|High|**Depends on**:<p><ul><li>Unable connect to vCenter Appliance</li></ul>|
+|vCenter Appliance Services Status is not Healthy|<p>Check the vCenter Appliance Services please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.services.status,#3,"eq","green")=0`|High|**Depends on**:<p><ul><li>Unable connect to vCenter Appliance</li></ul>|
+|vCenter Appliance Software Packages Updates Status is not Healthy|<p>Check the vCenter Appliance Software Packages please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.software.packages.updates.status,#3,"eq","green")=0`|High|**Depends on**:<p><ul><li>Unable connect to vCenter Appliance</li></ul>|
+|vCenter Appliance Storage Status is not Healthy|<p>Check the vCenter Appliance Storage please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.storage.status,#3,"eq","green")=0'`|High|**Depends on**:<p><ul><li>Unable connect to vCenter Appliance</li></ul>|
+|vCenter Appliance Swap Status is not Healthy|<p>Check the vCenter Appliance Swap please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.swap.status,#3,"eq","green")=0`|High|**Depends on**:<p><ul><li>Unable connect to vCenter Appliance</li></ul>|
 |Unable to connect to vCenter|<p>Check the connection to vCenter Appliance please</p>|`nodata(/vmware_vcenter_appliance/vcenter.appliance.system.status,120)=1`|Disaster||
 
 
