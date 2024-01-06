@@ -3,7 +3,7 @@
 
 ## Overview
 
-A simple template to monitor status of vCenter Appliance Components by Zabbix that works without any external `SCRIPT`s.
+A simple template to monitor status of vCenter Appliance Components by Zabbix that works without any external scripts.
 The template uses vCenter REST API instead of SNMP to obtain data.
 
 ## Requirements
