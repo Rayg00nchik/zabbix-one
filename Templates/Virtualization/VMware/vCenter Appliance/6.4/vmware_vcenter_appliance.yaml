@@ -4,11 +4,11 @@ zabbix_export:
     - uuid: 02e4df4f20b848e79267641790f241da
       name: Templates/Virtualization
   templates:
-    - uuid: 08b78bb4598c4122a2e69dadd4e6ec7d
+    - uuid: da2c77bf57e84c24aec7f5d82ad20b7b
       template: vmware_vcenter_appliance
       name: vmware_vcenter_appliance
       description: |
-        # Wrriten by Rayg00nchik
+        # Written by Rayg00nchik
         # Monitoring vCenter Appliance (7.0+)
         # Pre-requirenments:
         # - Create a new role in vCenter and new group or user (optionaly)
@@ -19,10 +19,11 @@ zabbix_export:
       groups:
         - name: Templates/Virtualization
       items:
-        - uuid: 15f64ee828f6441f882f0d973e7f31a3
+        - uuid: 4ff42b50c6584651afecf6c9723f2cd4
           name: 'vCenter Appliance Database Storage Status'
           type: SCRIPT
           key: vcenter.appliance.database.storage.status
+          history: 30d
           trends: '0'
           value_type: TEXT
           params: |
@@ -65,16 +66,20 @@ zabbix_export:
             - name: vcenter_url_session
               value: '{$VCENTER_URL_SESSION}'
           triggers:
-            - uuid: 016156cf899a4de8951da0d3a23185a7
-              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.database.storage.status,#3,"eq","green")=0'
+            - uuid: b05a416d550a49e4bf1bf7315fffabbd
+              expression: 'find(/vmware_vcenter_appliance/vcenter.appliance.database.storage.status,#3,"eq","green")=0'
               name: 'vCenter Appliance Database Storage is not Healthy'
               priority: HIGH
               description: 'Check the vCenter Appliance please'
               manual_close: 'YES'
-        - uuid: 7f9cd5b35801468ebe474a0b48b84116
+              dependencies:
+                - name: 'Unable connect to vCenter Appliance'
+                  expression: 'nodata(/vmware_vcenter_appliance/vcenter.appliance.system.status,5)=1'
+        - uuid: 26e71897f8e042d3bedf130a392c8075
           name: 'vCenter Appliance Load Status'
           type: SCRIPT
           key: vcenter.appliance.load.status
+          history: 30d
           trends: '0'
           value_type: TEXT
           params: |
@@ -117,16 +122,20 @@ zabbix_export:
             - name: vcenter_url_session
               value: '{$VCENTER_URL_SESSION}'
           triggers:
-            - uuid: 87816d435efd499c816d13f243efb293
-              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.load.status,#3,"eq","green")=0'
+            - uuid: 12cddc2d2f4e46a38abda2d4d1be1fb9
+              expression: 'find(/vmware_vcenter_appliance/vcenter.appliance.load.status,#3,"eq","green")=0'
               name: 'vCenter Appliance Load is not Healthy'
               priority: HIGH
               description: 'Check the vCenter Appliance please'
               manual_close: 'YES'
-        - uuid: 55c8657943264351a833a638d66e2b05
+              dependencies:
+                - name: 'Unable connect to vCenter Appliance'
+                  expression: 'nodata(/vmware_vcenter_appliance/vcenter.appliance.system.status,5)=1'
+        - uuid: 9b1b383e7ed24f468ce3de12e504997e
           name: 'vCenter Appliance Memory Status'
           type: SCRIPT
           key: vcenter.appliance.memory.status
+          history: 30d
           trends: '0'
           value_type: TEXT
           params: |
@@ -169,16 +178,20 @@ zabbix_export:
             - name: vcenter_url_session
               value: '{$VCENTER_URL_SESSION}'
           triggers:
-            - uuid: d4f585c260334c9996031044a2acafd8
-              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.memory.status,#3,"eq","green")=0'
+            - uuid: 82d5c3201fc94b47bc94ec9786f8961b
+              expression: 'find(/vmware_vcenter_appliance/vcenter.appliance.memory.status,#3,"eq","green")=0'
               name: 'vCenter Appliance Memory Status is not Healthy'
               priority: HIGH
               description: 'Check the vCenter Appliance please'
               manual_close: 'YES'
-        - uuid: 5658c2219dbd44e19fb708c4123d847f
+              dependencies:
+                - name: 'Unable connect to vCenter Appliance'
+                  expression: 'nodata(/vmware_vcenter_appliance/vcenter.appliance.system.status,5)=1'
+        - uuid: 7d5cdff45d2241fe8da2b5591402d75c
           name: 'vCenter Appliance Services Status'
           type: SCRIPT
           key: vcenter.appliance.services.status
+          history: 30d
           trends: '0'
           value_type: TEXT
           params: |
@@ -221,16 +234,20 @@ zabbix_export:
             - name: vcenter_appliance_health_url
               value: '{$VMWARE.APP.HEALTH.SERVICES.URL}'
           triggers:
-            - uuid: 3bcd8fe45e6349d8a8e7a38acc15d140
-              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.services.status,#3,"eq","green")=0'
+            - uuid: c675b98425ce4e0eaae2ccca8816b8fc
+              expression: 'find(/vmware_vcenter_appliance/vcenter.appliance.services.status,#3,"eq","green")=0'
               name: 'vCenter Appliance Services Status is not Healthy'
               priority: HIGH
               description: 'Check the vCenter Appliance please'
               manual_close: 'YES'
-        - uuid: e34dc7e744b34cffada3030c8ea930df
+              dependencies:
+                - name: 'Unable connect to vCenter Appliance'
+                  expression: 'nodata(/vmware_vcenter_appliance/vcenter.appliance.system.status,5)=1'
+        - uuid: ac35ba0d69e14c19b6ed88850041b6b8
           name: 'vCenter Appliance Software Packages Updates Status'
           type: SCRIPT
           key: vcenter.appliance.software.packages.updates.status
+          history: 30d
           trends: '0'
           value_type: TEXT
           params: |
@@ -273,16 +290,20 @@ zabbix_export:
             - name: vcenter_url_session
               value: '{$VCENTER_URL_SESSION}'
           triggers:
-            - uuid: 7fe21873a1d14af19c24a75aa3c185a1
-              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.software.packages.updates.status,#3,"eq","green")=0'
+            - uuid: 01270be8da8341f6b5694ac71fe4c7b2
+              expression: 'find(/vmware_vcenter_appliance/vcenter.appliance.software.packages.updates.status,#3,"eq","green")=0'
               name: 'vCenter Appliance Software Packages Updates Status is not Healthy'
               priority: HIGH
               description: 'Check the vCenter Appliance please'
               manual_close: 'YES'
-        - uuid: dbb6ce1b25254cd691dd33024500015f
+              dependencies:
+                - name: 'Unable connect to vCenter Appliance'
+                  expression: 'nodata(/vmware_vcenter_appliance/vcenter.appliance.system.status,5)=1'
+        - uuid: 1bb27d4a74a14c87ab2859f70c5a4181
           name: 'vCenter Appliance Storage Status'
           type: SCRIPT
           key: vcenter.appliance.storage.status
+          history: 30d
           trends: '0'
           value_type: TEXT
           params: |
@@ -325,16 +346,20 @@ zabbix_export:
             - name: vcenter_url_session
               value: '{$VCENTER_URL_SESSION}'
           triggers:
-            - uuid: ac72252242324c75bda20c641b954568
-              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.storage.status,#3,"eq","green")=0'
+            - uuid: 42915cc2695448e2903d1887e6462175
+              expression: 'find(/vmware_vcenter_appliance/vcenter.appliance.storage.status,#3,"eq","green")=0'
               name: 'vCenter Appliance Storage Status is not Healthy'
               priority: HIGH
               description: 'Check the vCenter Appliance please'
               manual_close: 'YES'
-        - uuid: 64052013e5b1443e9663d4bfd86989d9
+              dependencies:
+                - name: 'Unable connect to vCenter Appliance'
+                  expression: 'nodata(/vmware_vcenter_appliance/vcenter.appliance.system.status,5)=1'
+        - uuid: fbfa698b72b944a698064dc86a058cbe
           name: 'vCenter Appliance Swap Status'
           type: SCRIPT
           key: vcenter.appliance.swap.status
+          history: 30d
           trends: '0'
           value_type: TEXT
           params: |
@@ -377,16 +402,20 @@ zabbix_export:
             - name: vcenter_url_session
               value: '{$VCENTER_URL_SESSION}'
           triggers:
-            - uuid: 346929afa6584546a82ba3014952dd3d
-              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.swap.status,#3,"eq","green")=0'
+            - uuid: 55005c13ca3a4838a200f731c949704f
+              expression: 'find(/vmware_vcenter_appliance/vcenter.appliance.swap.status,#3,"eq","green")=0'
               name: 'vCenter Appliance Swap Status is not Healthy'
               priority: HIGH
               description: 'Check the vCenter Appliance please'
               manual_close: 'YES'
-        - uuid: 9f8daf7afcee45d1b48b8d59af9f465e
+              dependencies:
+                - name: 'Unable connect to vCenter Appliance'
+                  expression: 'nodata(/vmware_vcenter_appliance/vcenter.appliance.system.status,5)=1'
+        - uuid: 0e782de457964e85b25667fa0e2438a1
           name: 'vCenter Appliance System Last Check'
           type: SCRIPT
           key: vcenter.appliance.system.last.check
+          history: 30d
           trends: '0'
           value_type: TEXT
           params: |
@@ -428,10 +457,11 @@ zabbix_export:
               value: '{$VMWARE.APP.SYSTEM.LASTCHECK.STATUS.URL}'
             - name: vcenter_url_session
               value: '{$VCENTER_URL_SESSION}'
-        - uuid: d6c9870daf714b02afac5b0ef2451744
+        - uuid: 55a93866f81b488da932744e5d5c0a8d
           name: 'vCenter Appliance System Status'
           type: SCRIPT
           key: vcenter.appliance.system.status
+          history: 30d
           trends: '0'
           value_type: TEXT
           params: |
@@ -473,10 +503,17 @@ zabbix_export:
               value: '{$VMWARE.APP.SYSTEM.STATUS.URL}'
             - name: vcenter_url_session
               value: '{$VCENTER_URL_SESSION}'
+          triggers:
+            - uuid: 995f8619fd804d04a58258f6fe0ee01d
+              expression: 'nodata(/vmware_vcenter_appliance/vcenter.appliance.system.status,5)=1'
+              name: 'Unable connect to vCenter Appliance'
+              priority: DISASTER
+              description: 'Check the connection to vCenter Appliance please!'
+              manual_close: 'YES'
       macros:
         - macro: '{$VCENTER_URL_SESSION}'
           value: 'https://<vcenter_fqdn>/rest/com/vmware/cis/session'
-          description: 'vCenter Url to obtain auth token (value)'
+          description: 'vCenter Url to obtain authentification token (value)'
         - macro: '{$VMWARE.APP.DATABASE.STATUS.URL}'
           value: 'https://<vcenter_fqdn>/rest/appliance/health/database-storage'
           description: 'vCenter Appliance database storage status url'
@@ -505,11 +542,11 @@ zabbix_export:
           value: 'https://<vcenter_fqdn>/rest/appliance/health/system'
           description: 'vCenter Appliance system status url'
         - macro: '{$VMWARE.PASSWORD}'
-          value: '<password>'
+          value: <password>
           description: 'VMware service {$USERNAME} user password'
         - macro: '{$VMWARE.URL}'
           value: 'https://<vcenter_fqdn>/sdk'
-          description: 'VMware service SDK URL (https://<vcenter_fqdn>/sdk)'
+          description: 'VMware service - vCenter SDK URL (https://<vcenter_fqdn>/sdk)'
         - macro: '{$VMWARE.USERNAME}'
-          value: '<username>'
-          description: 'VMware service SDK user name'
+          value: <username>
+          description: 'VMware service user name'
