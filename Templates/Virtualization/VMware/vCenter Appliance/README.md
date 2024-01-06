@@ -53,7 +53,7 @@ This template has been tested on:
 
 |Name|Descriptionion|Default|
 |----|-----------|-------|
-|{$VCENTER_URL_SESSION}|<p>vCenter Url to obtain authentification token (value)</p>|https://<vcenter_fqdn>/rest/com/vmware/cis/session|
+|{$VCENTER_URL_SESSION}|<p>vCenter Url to obtain authentification token</p>|https://<vcenter_fqdn>/rest/com/vmware/cis/session|
 |{$VMWARE.APP.DATABASE.STATUS.URL}|<p>vCenter Appliance database storage status url</p>|https://<vcenter_fqdn>/rest/appliance/health/database-storage|
 |{$VMWARE.APP.HEALTH.SERVICES.URL}|<p>vCenter Appliance services status url (health)</p>|https://<vcenter_fqdn>/rest/appliance/health/applmgmt|
 |{$VMWARE.APP.LOAD.STATUS.URL}|<p>vCenter Appliance load status url</p>|https://<vcenter_fqdn>/rest/appliance/health/load|
