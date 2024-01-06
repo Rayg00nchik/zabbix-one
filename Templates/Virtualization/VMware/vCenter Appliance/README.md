@@ -101,6 +101,6 @@ There are no template links in this template.
 
 ## Feedback
 
-Please report any issues with the template [`here`](https://github.com/Rayg00nchik/zabbix-one/issues/new?assignees=&labels=bug&template=BUG_REPORT.md&title=Issues%3A+Bug+Report)
+Please report any issues with the template [here](https://github.com/Rayg00nchik/zabbix-one/issues/new?assignees=&labels=bug&template=BUG_REPORT.md&title=Issues%3A+Bug+Report)
 
-You can give feedback [`here`](mailto:rayg00nchik@gmail.com)
+You can give feedback [here](mailto:rayg00nchik@gmail.com)
