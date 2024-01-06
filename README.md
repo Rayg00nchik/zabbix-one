@@ -20,8 +20,8 @@ Despite the fact that it is assumed that you have been already familiar with the
 #
 - If you find a bug please open an [issue](https://github.com/Rayg00nchik/zabbix-one/issues/new?assignees=&labels=bug&template=BUG_REPORT.md&title=Issues%3A+Bug+Report)
 - New features, ideas you can post [here](https://github.com/Rayg00nchik/zabbix-one/issues/new?assignees=&labels=feature&template=NEW_FEATURE.md&title=Feature%3A+)
+- Any feedback is [welcome](mailto:rayg00nchik@gmail.com)
 - Please ⭐️ this repository if you find it helpful
-- Any feedback is welcome
 
 ### License
 #
