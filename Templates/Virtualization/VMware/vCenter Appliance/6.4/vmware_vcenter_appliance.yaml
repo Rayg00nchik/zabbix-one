@@ -1,0 +1,515 @@
+zabbix_export:
+  version: '6.4'
+  template_groups:
+    - uuid: 02e4df4f20b848e79267641790f241da
+      name: Templates/Virtualization
+  templates:
+    - uuid: 08b78bb4598c4122a2e69dadd4e6ec7d
+      template: vmware_vcenter_appliance
+      name: vmware_vcenter_appliance
+      description: |
+        # Wrriten by Rayg00nchik
+        # Monitoring vCenter Appliance (7.0+)
+        # Pre-requirenments:
+        # - Create a new role in vCenter and new group or user (optionaly)
+        # - Assign read priviliegs to the role (optionaly)
+        # - Assign read permisiions to the new group  (vStat, read only etc.)
+        # - In vCenter "Administration" -> "single sign-on" -> "user and groups" click on  "groups" and find "SystemConfiguration.ReadOnly" group. Add the previously created group there.
+        # - Check the Template Macroses before using!
+      groups:
+        - name: Templates/Virtualization
+      items:
+        - uuid: 15f64ee828f6441f882f0d973e7f31a3
+          name: 'vCenter Appliance Database Storage Status'
+          type: SCRIPT
+          key: vcenter.appliance.database.storage.status
+          trends: '0'
+          value_type: TEXT
+          params: |
+            // Parsing incoming parameters;
+            parameters = JSON.parse(value);
+            
+            // Coding username + pass to base64
+            auth_key = btoa(parameters.username + ":" + parameters.password);
+            
+            // Getting auth token 
+            req = new HttpRequest();
+            req.addHeader('Authorization: Basic '+auth_key);
+            resp = req.post(parameters.vcenter_url_session);
+            session_id = resp.match(/(?:[a-zA-Z0-9]{32})/g);
+            
+            // Getting database storage status
+            req_vcenter_database_storage_status = new HttpRequest();
+            req_vcenter_database_storage_status.addHeader('vmware-api-session-id: '+session_id);
+            req_vcenter_database_storage_status = req_vcenter_database_storage_status.get(parameters.vcenter_database_health_url);
+            
+            //Parsing result
+            json_data = JSON.parse(req_vcenter_database_storage_status);
+            
+            // Deleting current session - logout
+            req_logout_session = new HttpRequest();
+            req_logout_session.addHeader('vmware-api-session-id: '+session_id);
+            req_logout_session = req_logout_session.delete(parameters.vcenter_url_session);
+            
+            
+            // Returning the value, not an object
+            return(json_data.value);
+          description: 'Getting appliance database storage status'
+          parameters:
+            - name: password
+              value: '{$VMWARE.PASSWORD}'
+            - name: username
+              value: '{$VMWARE.USERNAME}'
+            - name: vcenter_database_health_url
+              value: '{$VMWARE.APP.DATABASE.STATUS.URL}'
+            - name: vcenter_url_session
+              value: '{$VCENTER_URL_SESSION}'
+          triggers:
+            - uuid: 016156cf899a4de8951da0d3a23185a7
+              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.database.storage.status,#3,"eq","green")=0'
+              name: 'vCenter Appliance Database Storage is not Healthy'
+              priority: HIGH
+              description: 'Check the vCenter Appliance please'
+              manual_close: 'YES'
+        - uuid: 7f9cd5b35801468ebe474a0b48b84116
+          name: 'vCenter Appliance Load Status'
+          type: SCRIPT
+          key: vcenter.appliance.load.status
+          trends: '0'
+          value_type: TEXT
+          params: |
+            // Parsing incoming parameters;
+            parameters = JSON.parse(value);
+            
+            // Coding username + pass to base64
+            auth_key = btoa(parameters.username + ":" + parameters.password);
+            
+            // Getting auth token 
+            req = new HttpRequest();
+            req.addHeader('Authorization: Basic '+auth_key);
+            resp = req.post(parameters.vcenter_url_session);
+            session_id = resp.match(/(?:[a-zA-Z0-9]{32})/g);
+            
+            // Getting load status
+            req_vcenter_load_status = new HttpRequest();
+            req_vcenter_load_status.addHeader('vmware-api-session-id: '+session_id);
+            req_vcenter_load_status = req_vcenter_load_status.get(parameters.vcenter_load_health_url);
+            
+            //Parsing result
+            json_data = JSON.parse(req_vcenter_load_status);
+            
+            // Deleting current session - logout
+            req_logout_session = new HttpRequest();
+            req_logout_session.addHeader('vmware-api-session-id: '+session_id);
+            req_logout_session = req_logout_session.delete(parameters.vcenter_url_session);
+            
+            
+            // Returning the value, not an object
+            return(json_data.value);
+          description: 'Getting appliance load status'
+          parameters:
+            - name: password
+              value: '{$VMWARE.PASSWORD}'
+            - name: username
+              value: '{$VMWARE.USERNAME}'
+            - name: vcenter_load_health_url
+              value: '{$VMWARE.APP.LOAD.STATUS.URL}'
+            - name: vcenter_url_session
+              value: '{$VCENTER_URL_SESSION}'
+          triggers:
+            - uuid: 87816d435efd499c816d13f243efb293
+              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.load.status,#3,"eq","green")=0'
+              name: 'vCenter Appliance Load is not Healthy'
+              priority: HIGH
+              description: 'Check the vCenter Appliance please'
+              manual_close: 'YES'
+        - uuid: 55c8657943264351a833a638d66e2b05
+          name: 'vCenter Appliance Memory Status'
+          type: SCRIPT
+          key: vcenter.appliance.memory.status
+          trends: '0'
+          value_type: TEXT
+          params: |
+            // Parsing incoming parameters;
+            parameters = JSON.parse(value);
+            
+            // Coding username + pass to base64
+            auth_key = btoa(parameters.username + ":" + parameters.password);
+            
+            // Getting auth token 
+            req = new HttpRequest();
+            req.addHeader('Authorization: Basic '+auth_key);
+            resp = req.post(parameters.vcenter_url_session);
+            session_id = resp.match(/(?:[a-zA-Z0-9]{32})/g);
+            
+            // Getting load status
+            req_vcenter_memory_status = new HttpRequest();
+            req_vcenter_memory_status.addHeader('vmware-api-session-id: '+session_id);
+            req_vcenter_memory_status = req_vcenter_memory_status.get(parameters.vcenter_memory_health_url);
+            
+            //Parsing result
+            json_data = JSON.parse(req_vcenter_memory_status);
+            
+            // Deleting current session - logout
+            req_logout_session = new HttpRequest();
+            req_logout_session.addHeader('vmware-api-session-id: '+session_id);
+            req_logout_session = req_logout_session.delete(parameters.vcenter_url_session);
+            
+            
+            // Returning the value, not an object
+            return(json_data.value);
+          description: 'Getting appliance memory health status'
+          parameters:
+            - name: password
+              value: '{$VMWARE.PASSWORD}'
+            - name: username
+              value: '{$VMWARE.USERNAME}'
+            - name: vcenter_memory_health_url
+              value: '{$VMWARE.APP.MEMORY.STATUS.URL}'
+            - name: vcenter_url_session
+              value: '{$VCENTER_URL_SESSION}'
+          triggers:
+            - uuid: d4f585c260334c9996031044a2acafd8
+              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.memory.status,#3,"eq","green")=0'
+              name: 'vCenter Appliance Memory Status is not Healthy'
+              priority: HIGH
+              description: 'Check the vCenter Appliance please'
+              manual_close: 'YES'
+        - uuid: 5658c2219dbd44e19fb708c4123d847f
+          name: 'vCenter Appliance Services Status'
+          type: SCRIPT
+          key: vcenter.appliance.services.status
+          trends: '0'
+          value_type: TEXT
+          params: |
+            // Parsing incoming parameters;
+            parameters = JSON.parse(value);
+            
+            // Coding username + pass to base64
+            auth_key = btoa(parameters.username + ":" + parameters.password);
+            
+            // Getting auth token 
+            req = new HttpRequest();
+            req.addHeader('Authorization: Basic '+auth_key);
+            resp = req.post(parameters.vcenter_url_session);
+            session_id = resp.match(/(?:[a-zA-Z0-9]{32})/g);
+            
+            // Getting status of appliance services
+            req_vcenter_appliance_services_status = new HttpRequest();
+            req_vcenter_appliance_services_status.addHeader('vmware-api-session-id: '+session_id);
+            req_vcenter_appliance_services_status = req_vcenter_appliance_services_status.get(parameters.vcenter_appliance_health_url);
+            
+            //Parsing result
+            json_data = JSON.parse(req_vcenter_appliance_services_status);
+            
+            // Deleting current session - logout
+            req_logout_session = new HttpRequest();
+            req_logout_session.addHeader('vmware-api-session-id: '+session_id);
+            req_logout_session = req_logout_session.delete(parameters.vcenter_url_session);
+            
+            
+            // Returning the raw value, not an object
+            return(json_data.value);
+          description: 'Getting appliance services status'
+          parameters:
+            - name: username
+              value: '{$VMWARE.USERNAME}'
+            - name: password
+              value: '{$VMWARE.PASSWORD}'
+            - name: vcenter_url_session
+              value: '{$VCENTER_URL_SESSION}'
+            - name: vcenter_appliance_health_url
+              value: '{$VMWARE.APP.HEALTH.SERVICES.URL}'
+          triggers:
+            - uuid: 3bcd8fe45e6349d8a8e7a38acc15d140
+              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.services.status,#3,"eq","green")=0'
+              name: 'vCenter Appliance Services Status is not Healthy'
+              priority: HIGH
+              description: 'Check the vCenter Appliance please'
+              manual_close: 'YES'
+        - uuid: e34dc7e744b34cffada3030c8ea930df
+          name: 'vCenter Appliance Software Packages Updates Status'
+          type: SCRIPT
+          key: vcenter.appliance.software.packages.updates.status
+          trends: '0'
+          value_type: TEXT
+          params: |
+            // Parsing incoming parameters;
+            parameters = JSON.parse(value);
+            
+            // Coding username + pass to base64
+            auth_key = btoa(parameters.username + ":" + parameters.password);
+            
+            // Getting auth token 
+            req = new HttpRequest();
+            req.addHeader('Authorization: Basic '+auth_key);
+            resp = req.post(parameters.vcenter_url_session);
+            session_id = resp.match(/(?:[a-zA-Z0-9]{32})/g);
+            
+            // Getting software packages updates status
+            req_vcenter_software_status = new HttpRequest();
+            req_vcenter_software_status.addHeader('vmware-api-session-id: '+session_id);
+            req_vcenter_software_status = req_vcenter_software_status.get(parameters.vcenter_software_health_url);
+            
+            //Parsing result
+            json_data = JSON.parse(req_vcenter_software_status);
+            
+            // Deleting current session - logout
+            req_logout_session = new HttpRequest();
+            req_logout_session.addHeader('vmware-api-session-id: '+session_id);
+            req_logout_session = req_logout_session.delete(parameters.vcenter_url_session);
+            
+            
+            // Returning the value, not an object
+            return(json_data.value);
+          description: 'Getting appliance software packages updates health status'
+          parameters:
+            - name: password
+              value: '{$VMWARE.PASSWORD}'
+            - name: username
+              value: '{$VMWARE.USERNAME}'
+            - name: vcenter_software_health_url
+              value: '{$VMWARE.APP.SOFTWARE.STATUS.URL}'
+            - name: vcenter_url_session
+              value: '{$VCENTER_URL_SESSION}'
+          triggers:
+            - uuid: 7fe21873a1d14af19c24a75aa3c185a1
+              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.software.packages.updates.status,#3,"eq","green")=0'
+              name: 'vCenter Appliance Software Packages Updates Status is not Healthy'
+              priority: HIGH
+              description: 'Check the vCenter Appliance please'
+              manual_close: 'YES'
+        - uuid: dbb6ce1b25254cd691dd33024500015f
+          name: 'vCenter Appliance Storage Status'
+          type: SCRIPT
+          key: vcenter.appliance.storage.status
+          trends: '0'
+          value_type: TEXT
+          params: |
+            // Parsing incoming parameters;
+            parameters = JSON.parse(value);
+            
+            // Coding username + pass to base64
+            auth_key = btoa(parameters.username + ":" + parameters.password);
+            
+            // Getting auth token 
+            req = new HttpRequest();
+            req.addHeader('Authorization: Basic '+auth_key);
+            resp = req.post(parameters.vcenter_url_session);
+            session_id = resp.match(/(?:[a-zA-Z0-9]{32})/g);
+            
+            // Getting storage status
+            req_vcenter_storage_status = new HttpRequest();
+            req_vcenter_storage_status.addHeader('vmware-api-session-id: '+session_id);
+            req_vcenter_storage_status = req_vcenter_storage_status.get(parameters.vcenter_storage_health_url);
+            
+            //Parsing result
+            json_data = JSON.parse(req_vcenter_storage_status);
+            
+            // Deleting current session - logout
+            req_logout_session = new HttpRequest();
+            req_logout_session.addHeader('vmware-api-session-id: '+session_id);
+            req_logout_session = req_logout_session.delete(parameters.vcenter_url_session);
+            
+            
+            // Returning the value, not an object
+            return(json_data.value);
+          description: 'Getting appliance storage health status'
+          parameters:
+            - name: password
+              value: '{$VMWARE.PASSWORD}'
+            - name: username
+              value: '{$VMWARE.USERNAME}'
+            - name: vcenter_storage_health_url
+              value: '{$VMWARE.APP.STORAGE.STATUS.URL}'
+            - name: vcenter_url_session
+              value: '{$VCENTER_URL_SESSION}'
+          triggers:
+            - uuid: ac72252242324c75bda20c641b954568
+              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.storage.status,#3,"eq","green")=0'
+              name: 'vCenter Appliance Storage Status is not Healthy'
+              priority: HIGH
+              description: 'Check the vCenter Appliance please'
+              manual_close: 'YES'
+        - uuid: 64052013e5b1443e9663d4bfd86989d9
+          name: 'vCenter Appliance Swap Status'
+          type: SCRIPT
+          key: vcenter.appliance.swap.status
+          trends: '0'
+          value_type: TEXT
+          params: |
+            // Parsing incoming parameters;
+            parameters = JSON.parse(value);
+            
+            // Coding username + pass to base64
+            auth_key = btoa(parameters.username + ":" + parameters.password);
+            
+            // Getting auth token 
+            req = new HttpRequest();
+            req.addHeader('Authorization: Basic '+auth_key);
+            resp = req.post(parameters.vcenter_url_session);
+            session_id = resp.match(/(?:[a-zA-Z0-9]{32})/g);
+            
+            // Getting swap status
+            req_vcenter_swap_status = new HttpRequest();
+            req_vcenter_swap_status.addHeader('vmware-api-session-id: '+session_id);
+            req_vcenter_swap_status = req_vcenter_swap_status.get(parameters.vcenter_swap_health_url);
+            
+            //Parsing result
+            json_data = JSON.parse(req_vcenter_swap_status);
+            
+            // Deleting current session - logout
+            req_logout_session = new HttpRequest();
+            req_logout_session.addHeader('vmware-api-session-id: '+session_id);
+            req_logout_session = req_logout_session.delete(parameters.vcenter_url_session);
+            
+            
+            // Returning the value, not an object
+            return(json_data.value);
+          description: 'Getting appliance swap health status'
+          parameters:
+            - name: password
+              value: '{$VMWARE.PASSWORD}'
+            - name: username
+              value: '{$VMWARE.USERNAME}'
+            - name: vcenter_swap_health_url
+              value: '{$VMWARE.APP.SWAP.STATUS.URL}'
+            - name: vcenter_url_session
+              value: '{$VCENTER_URL_SESSION}'
+          triggers:
+            - uuid: 346929afa6584546a82ba3014952dd3d
+              expression: 'find(/zbx_vmware_vcenter_appliance_test/vcenter.appliance.swap.status,#3,"eq","green")=0'
+              name: 'vCenter Appliance Swap Status is not Healthy'
+              priority: HIGH
+              description: 'Check the vCenter Appliance please'
+              manual_close: 'YES'
+        - uuid: 9f8daf7afcee45d1b48b8d59af9f465e
+          name: 'vCenter Appliance System Last Check'
+          type: SCRIPT
+          key: vcenter.appliance.system.last.check
+          trends: '0'
+          value_type: TEXT
+          params: |
+            // Parsing incoming parameters;
+            parameters = JSON.parse(value);
+            
+            // Coding username + pass to base64
+            auth_key = btoa(parameters.username + ":" + parameters.password);
+            
+            // Getting auth token 
+            req = new HttpRequest();
+            req.addHeader('Authorization: Basic '+auth_key);
+            resp = req.post(parameters.vcenter_url_session);
+            session_id = resp.match(/(?:[a-zA-Z0-9]{32})/g);
+            
+            // Getting system last check time
+            req_vcenter_system_lastcheck_time = new HttpRequest();
+            req_vcenter_system_lastcheck_time.addHeader('vmware-api-session-id: '+session_id);
+            req_vcenter_system_lastcheck_time = req_vcenter_system_lastcheck_time.get(parameters.vcenter_system_lastcheck_url);
+            
+            //Parsing result
+            json_data = JSON.parse(req_vcenter_system_lastcheck_time);
+            
+            // Deleting current session - logout
+            req_logout_session = new HttpRequest();
+            req_logout_session.addHeader('vmware-api-session-id: '+session_id);
+            req_logout_session = req_logout_session.delete(parameters.vcenter_url_session);
+            
+            
+            // Returning the value, not an object
+            return(json_data.value);
+          description: 'Getting appliance system last check'
+          parameters:
+            - name: password
+              value: '{$VMWARE.PASSWORD}'
+            - name: username
+              value: '{$VMWARE.USERNAME}'
+            - name: vcenter_system_lastcheck_url
+              value: '{$VMWARE.APP.SYSTEM.LASTCHECK.STATUS.URL}'
+            - name: vcenter_url_session
+              value: '{$VCENTER_URL_SESSION}'
+        - uuid: d6c9870daf714b02afac5b0ef2451744
+          name: 'vCenter Appliance System Status'
+          type: SCRIPT
+          key: vcenter.appliance.system.status
+          trends: '0'
+          value_type: TEXT
+          params: |
+            // Parsing incoming parameters;
+            parameters = JSON.parse(value);
+            
+            // Coding username + pass to base64
+            auth_key = btoa(parameters.username + ":" + parameters.password);
+            
+            // Getting auth token 
+            req = new HttpRequest();
+            req.addHeader('Authorization: Basic '+auth_key);
+            resp = req.post(parameters.vcenter_url_session);
+            session_id = resp.match(/(?:[a-zA-Z0-9]{32})/g);
+            
+            // Getting system status
+            req_vcenter_system_status = new HttpRequest();
+            req_vcenter_system_status.addHeader('vmware-api-session-id: '+session_id);
+            req_vcenter_system_status = req_vcenter_system_status.get(parameters.vcenter_system_health_url);
+            
+            //Parsing result
+            json_data = JSON.parse(req_vcenter_system_status);
+            
+            // Deleting current session - logout
+            req_logout_session = new HttpRequest();
+            req_logout_session.addHeader('vmware-api-session-id: '+session_id);
+            req_logout_session = req_logout_session.delete(parameters.vcenter_url_session);
+            
+            
+            // Returning the value, not an object
+            return(json_data.value);
+          description: 'Getting appliance system health status'
+          parameters:
+            - name: password
+              value: '{$VMWARE.PASSWORD}'
+            - name: username
+              value: '{$VMWARE.USERNAME}'
+            - name: vcenter_system_health_url
+              value: '{$VMWARE.APP.SYSTEM.STATUS.URL}'
+            - name: vcenter_url_session
+              value: '{$VCENTER_URL_SESSION}'
+      macros:
+        - macro: '{$VCENTER_URL_SESSION}'
+          value: 'https://<vcenter_fqdn>/rest/com/vmware/cis/session'
+          description: 'vCenter Url to obtain auth token (value)'
+        - macro: '{$VMWARE.APP.DATABASE.STATUS.URL}'
+          value: 'https://<vcenter_fqdn>/rest/appliance/health/database-storage'
+          description: 'vCenter Appliance database storage status url'
+        - macro: '{$VMWARE.APP.HEALTH.SERVICES.URL}'
+          value: 'https://<vcenter_fqdn>/rest/appliance/health/applmgmt'
+          description: 'vCenter Appliance services status url (health)'
+        - macro: '{$VMWARE.APP.LOAD.STATUS.URL}'
+          value: 'https://<vcenter_fqdn>/rest/appliance/health/load'
+          description: 'vCenter Appliance load status url'
+        - macro: '{$VMWARE.APP.MEMORY.STATUS.URL}'
+          value: 'https://<vcenter_fqdn>/rest/appliance/health/mem'
+          description: 'vCenter Appliance memory status url'
+        - macro: '{$VMWARE.APP.SOFTWARE.STATUS.URL}'
+          value: 'https://<vcenter_fqdn>/rest/appliance/health/software-packages'
+          description: 'vCenter Appliance software status url'
+        - macro: '{$VMWARE.APP.STORAGE.STATUS.URL}'
+          value: 'https://<vcenter_fqdn>/rest/appliance/health/storage'
+          description: 'vCenter Appliance storage status url'
+        - macro: '{$VMWARE.APP.SWAP.STATUS.URL}'
+          value: 'https://<vcenter_fqdn>/rest/appliance/health/swap'
+          description: 'vCenter Appliance swap status url'
+        - macro: '{$VMWARE.APP.SYSTEM.LASTCHECK.STATUS.URL}'
+          value: 'https://<vcenter_fqdn>/rest/appliance/health/system/lastcheck'
+          description: 'vCenter Appliance system last check url'
+        - macro: '{$VMWARE.APP.SYSTEM.STATUS.URL}'
+          value: 'https://<vcenter_fqdn>/rest/appliance/health/system'
+          description: 'vCenter Appliance system status url'
+        - macro: '{$VMWARE.PASSWORD}'
+          value: '<password>'
+          description: 'VMware service {$USERNAME} user password'
+        - macro: '{$VMWARE.URL}'
+          value: 'https://<vcenter_fqdn>/sdk'
+          description: 'VMware service SDK URL (https://<vcenter_fqdn>/sdk)'
+        - macro: '{$VMWARE.USERNAME}'
+          value: '<username>'
+          description: 'VMware service SDK user name'
