@@ -546,7 +546,7 @@ zabbix_export:
           description: 'VMware service user password'
         - macro: '{$VMWARE.URL}'
           value: 'https://<vcenter_fqdn>/sdk'
-          description: 'VMware service - vCenter SDK URL (https://<vcenter_fqdn>/sdk)'
+          description: 'VMware service - vCenter SDK URL'
         - macro: '{$VMWARE.USERNAME}'
           value: <username>
           description: 'VMware service user name'
