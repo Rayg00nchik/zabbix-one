@@ -1,9 +1,7 @@
-<img src="https://github.com/Rayg00nchik/zabbix-one/blob/main/.github/Icons/system_2.png" align="right" />
-
-# Zabbix Monitoring Templates and Tools 
+# Zabbix Monitoring Templates and Tools
 [![Zabbix](https://github.com/Rayg00nchik/zabbix-one/blob/main/.github/Icons/badge.svg)](https://github.com/zabbix/)
-#
-
+<img style="float: right;" src="https://github.com/Rayg00nchik/zabbix-one/blob/main/.github/Icons/system_2.png" align="right" />
+##
 This is another repository containing Zabbix templates and tools for monitoring IT infrastructure including: servers, web-sites, network devices, hypervisors and other things. 
 The templates presented here have been successfully tested and used in at least one ~~bloody~~ enterprise. 
 <p>
