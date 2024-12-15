@@ -33,41 +33,40 @@ The template has been tested on:
 ## Setup
 
 1. Connect to your KSMG server via SSH and add the following strings to the file /etc/snmp/snmpd.conf to make connections through the UNIX socket:
-    
-    master agentx
-    agentXSocket unix:/var/run/agentx-master.socket
-    agentXPerms 770 770 kluser klusers
-
+```
+master agentx
+agentXSocket unix:/var/run/agentx-master.socket
+agentXPerms 770 770 kluser klusers
+```
 2. Check the settings in /etc/snmp/snmpd.conf:
-        
-    #com2sec notConfigUser  default       public
-    com2sec notConfigUser  default       <ksmg-community-name>
+```     
+#com2sec notConfigUser  default       public
+com2sec notConfigUser  default       <ksmg-community-name>
 
-    view    systemview    included   .1.3.6.1.2.1.1
-    view    systemview    included   .1.3.6.1.2.1.25.1.1
-    view    systemview    included   .1.3.6.1.4.1.
-
-    If there are no such strings, add it!
-
-    Change <ksmg-community-name> to any name you want to use.
+view    systemview    included   .1.3.6.1.2.1.1
+view    systemview    included   .1.3.6.1.2.1.25.1.1
+view    systemview    included   .1.3.6.1.4.1.
+```
+If there are no such strings, add it!
+Change <ksmg-community-name> to any name you want to use.
 
 3. Restart the snmpd service. To do it, run the following command:
-    
-    systemctl restart snmpd
-
+```    
+systemctl restart snmpd
+```
 4. Add the snmpd service to autostart. To do it, run the following command:
-    
-    systemctl enable snmpd
-    
-    The snmpd service will be configured. 
-    To enable the application to operate over the SNMP protocol, enable use of SNMP in the application web interface:
-    https://support.kaspersky.com/KSMG/2.0/en-US/91248.htm.
+``` 
+systemctl enable snmpd
+``` 
+The snmpd service will be configured. 
+To enable the application to operate over the SNMP protocol, enable use of SNMP in the application web interface:
+https://support.kaspersky.com/KSMG/2.0/en-US/91248.htm.
 
 5. Check the availability of snmptd from your zabbix server\proxy like:
-        
-    snmpwalk -v2c -c <ksmg-community-name> <you-ksmg-server-ip-address> .1.3.6.1.4.1.23668.1735.2.1.2.0
-    
-    If you don't have "snmpwalk" - just install it according to your operating system.
+```        
+snmpwalk -v2c -c <ksmg-community-name> <you-ksmg-server-ip-address> .1.3.6.1.4.1.23668.1735.2.1.2.0
+```
+If you don't have "snmpwalk" - just install it according to your operating system.
 
 ## Macros used
 
@@ -168,17 +167,13 @@ There are no discovery rules in this template.
 |Trial license expired|<p>Trial license expired.</p>|`SNMP trap`|<p>snmptrap[23668.1735.1.340]</p>|
 |Update error|<p>Application database update ended with an error.</p>|`SNMP trap`|<p>snmptrap[23668.1735.1.10]</p>|
 
-
-
-
 ## Triggers
 
 |Name|Descriptionion|Expression|Severity|Dependencies and additional info|
 |----|-----------|----------|--------|--------------------------------|
-|KSMG antifishing DB obsoleted|<p>-</p>|<p>**Expression**:nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.160],1s)=0</p><p>**Recovery expression**:nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.160],120s)=1</p>|High|Allow manual close: true|
-|KSMG Antifishing DB outdated|<p>-</p>|<p>**Expression**:nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.150],1s)=0</p><p>**Recovery expression**:nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.150],120s)=1</p>|Warning|Allow manual close: true|
+|KSMG antifishing DB obsoleted|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.160],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.160],120s)=1</p>|High|Allow manual close: true|
+|KSMG Antifishing DB outdated|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.150],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.150],120s)=1</p>|Warning|Allow manual close: true|
 
-<p>**Expression**: minSAD[{$URL}</p><p>**Recovery expression**: min</p>
 
 ## Feedback
 
