@@ -43,7 +43,7 @@ zabbix_export:
         
         The snmpd service will be configured. 
         To enable the application to operate over the SNMP protocol, enable use of SNMP in the application web interface:
-        https://support.kaspersky.com/KSMG/2.0/ru-RU/91248.htm
+        https://support.kaspersky.com/KSMG/2.0/en-US/91248.htm
         
         5. Check the availability of snmptd from your zabbix server\proxy like:
         
@@ -613,6 +613,9 @@ zabbix_export:
           delay: '0'
           trends: '0'
           value_type: TEXT
+          tags:
+          - tag: Application
+            value: KSMG
           triggers:
             - uuid: f90fb74b16d44cb290627bec4d7374d8
               expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.150],1s)=0'

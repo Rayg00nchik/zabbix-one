@@ -51,7 +51,7 @@ This template has been tested on:
 
 ## Macros used
 
-|Name|Descriptionion|Default|
+|Name|Description|Default|
 |----|-----------|-------|
 |{$VCENTER_URL_SESSION}|<p>vCenter Url to obtain authentification token</p>|https://<vcenter_fqdn>/rest/com/vmware/cis/session|
 |{$VMWARE.APP.DATABASE.STATUS.URL}|<p>vCenter Appliance database storage status url</p>|https://<vcenter_fqdn>/rest/appliance/health/database-storage|
@@ -73,7 +73,7 @@ There are no template links in this template.
 
 ## Items
 
-|Name|Descriptionion|Type|Key and additional info|
+|Name|Description|Type|Key and additional info|
 |----|-----------|----|-----------------------|
 |vCenter Appliance Database Storage Status|<p>Getting appliance database storage status</p>|`SCRIPT`|<p>vcenter.appliance.database.storage.status</p>|
 |vCenter Appliance Load Status|<p>Getting appliance load status</p>|`SCRIPT`|<p>vcenter.appliance.load.status</p>|
@@ -87,7 +87,7 @@ There are no template links in this template.
 
 ## Triggers
 
-|Name|Descriptionion|Expression|Severity|Dependencies and additional info|
+|Name|Description|Expression|Severity|Dependencies and additional info|
 |----|-----------|----------|--------|--------------------------------|
 |vCenter Appliance Database Storage is not Healthy|<p>Check the vCenter Appliance Database Storage please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.database.storage.status,#3,"eq","green")=0`|High|**Depends on**:<br><ul><li>Unable to connect to vCenter Appliance</li></ul>|
 |vCenter Appliance Load is not Healthy|<p>Check the vCenter Appliance Load please</p>|`find(/vmware_vcenter_appliance/vcenter.appliance.load.status,#3,"eq","green")=0`|High|**Depends on**:<br><ul><li>Unable to connect to vCenter Appliance</li></ul>|
