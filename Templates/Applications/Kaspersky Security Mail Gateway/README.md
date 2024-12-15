@@ -48,7 +48,7 @@ view    systemview    included   .1.3.6.1.2.1.25.1.1
 view    systemview    included   .1.3.6.1.4.1.
 ```
 <p>If there are no such strings, add it!</p>
-<p>Change `<ksmg-community-name>` to any name you want to use.</p>
+<p>Change ```<ksmg-community-name>``` to any name you want to use.</p>
 
 3. Restart the snmpd service. To do it, run the following command:
 ```    
@@ -169,7 +169,7 @@ There are no discovery rules in this template.
 
 ## Triggers
 
-|Name|Descriptionion|Expression|Severity|Dependencies and additional info|
+|Name|Description|Expression|Severity|Dependencies and additional info|
 |----|-----------|----------|--------|--------------------------------|
 |KSMG antifishing DB obsoleted|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.160],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.160],120s)=1</p>|High|Allow manual close: true|
 |KSMG Antifishing DB outdated|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.150],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.150],120s)=1</p>|Warning|Allow manual close: true|
