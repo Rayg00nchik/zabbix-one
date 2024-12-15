@@ -17,7 +17,7 @@ Rayg00nchik
 ## Requirements
 
 Zabbix version: 
-- 6.4 and higher 
+- 6.4 and Higher 
 
 ## Tested versions
 
@@ -32,13 +32,13 @@ The template has been tested on:
 
 ## Setup
 
-1. Connect to your KSMG server via SSH and add the following strings to the file /etc/snmp/snmpd.conf to make connections through the UNIX socket:
+1. Connect to your KSMG server via SSH and add the following strings to the file `/etc/snmp/snmpd.conf` to make connections through the UNIX socket:
 ```
 master agentx
 agentXSocket unix:/var/run/agentx-master.socket
 agentXPerms 770 770 kluser klusers
 ```
-2. Check the settings in /etc/snmp/snmpd.conf:
+2. Check the settings in `/etc/snmp/snmpd.conf`:
 ```     
 #com2sec notConfigUser  default       public
 com2sec notConfigUser  default       <ksmg-community-name>
@@ -47,8 +47,8 @@ view    systemview    included   .1.3.6.1.2.1.1
 view    systemview    included   .1.3.6.1.2.1.25.1.1
 view    systemview    included   .1.3.6.1.4.1.
 ```
-If there are no such strings, add it!
-Change <ksmg-community-name> to any name you want to use.
+<p>If there are no such strings, add it!</p>
+<p>Change `<ksmg-community-name>` to any name you want to use.</p>
 
 3. Restart the snmpd service. To do it, run the following command:
 ```    
@@ -58,9 +58,9 @@ systemctl restart snmpd
 ``` 
 systemctl enable snmpd
 ``` 
-The snmpd service will be configured. 
-To enable the application to operate over the SNMP protocol, enable use of SNMP in the application web interface:
-https://support.kaspersky.com/KSMG/2.0/en-US/91248.htm.
+<p>The snmpd service will be configured.</p> 
+<p>To enable the application to operate over the SNMP protocol, enable use of SNMP in the application web interface:</p>
+<p>https://support.kaspersky.com/KSMG/2.0/en-US/91248.htm.</p>
 
 5. Check the availability of snmptd from your zabbix server\proxy like:
 ```        
@@ -173,6 +173,28 @@ There are no discovery rules in this template.
 |----|-----------|----------|--------|--------------------------------|
 |KSMG antifishing DB obsoleted|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.160],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.160],120s)=1</p>|High|Allow manual close: true|
 |KSMG Antifishing DB outdated|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.150],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.150],120s)=1</p>|Warning|Allow manual close: true|
+|KSMG Antispam DB obsoleted|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.140],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.140],120s)=1</p>|High|Allow manual close: true|
+|KSMG Antispam DB outdated|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.130],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.130],120s)=1</p>|Average|Allow manual close: true|
+|KSMG Antispam module error|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.530],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.530],120s)=1</p>|High|Allow manual close: true|
+|KSMG Antivir DB obsoleted|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.120],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.120],120s)=1</p>|High|Allow manual close: true|
+|KSMG Antivir DB outdated|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.100],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.100],120s)=1</p>|Warning|Allow manual close: true|
+|KSMG Antivir module error|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.520],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.520],120s)=1</p>|High|Allow manual close: true|
+|KSMG Cluster consistency error|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.1600],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.1600],120s)=1</p>|High|Allow manual close: true|
+|KSMG Cluster emergency state|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.1610],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.1610],120s)=1</p>|Disaster|Allow manual close: true|
+|KSMG Cluster sync error|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.1620],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.1620],120s)=1</p>|Average|Allow manual close: true|
+|KSMG Compilation antispam DB error|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.30],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.30],120s)=1</p>|Warning|Allow manual close: true|
+|KSMG Daemon crashed|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.400],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.400],120s)=1</p>|High|Allow manual close: true|
+|KSMG Daemon restarted|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.410],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.410],120s)=1</p>|High|Allow manual close: true|
+|KSMG database update error|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.10],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.10],120s)=1</p>|Average|Allow manual close: true|
+|KSMG KSN connection status changed|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.700],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.700],120s)=1</p>|Information|Allow manual close: true|
+|KSMG License blacklisted|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.350],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.300],1s)=0</p>|Disaster|Allow manual close: true|
+|KSMG License deleted|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.310],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.300],1s)=0</p>|High|Allow manual close: true|
+|KSMG License expired|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.330],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.300],1s)=0</p>|Disaster|Allow manual close: true|
+|KSMG License soon expired|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.320],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.300],1s)=0</p>|High|Allow manual close: true|
+|KSMG Storage is full|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.220],1s)=0</p><p>**Recovery expression**: none</p>|High|Allow manual close: true|
+|KSMG Threat detected|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.510],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.510],120s)=1</p>|Warning|Allow manual close: true|
+|KSMG trial license expired|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.340],1s)=0</p><p>**Recovery expression**: nodata(/zbx_ksmg_snmp/snmptrap[23668.1735.1.300],1s)=0</p>|Disaster|Allow manual close: true|
+|No SNMP Data Retrieved|<p>-</p>|<p>**Expression**: nodata(/zbx_ksmg_snmp/productinfoStatistics.licenseStatus,600s)</p><p>**Recovery expression**: none</p>|High|Allow manual close: true|
 
 
 ## Feedback
