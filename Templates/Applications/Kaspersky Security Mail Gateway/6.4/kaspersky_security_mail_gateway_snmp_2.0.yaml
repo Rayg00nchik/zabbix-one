@@ -1,0 +1,955 @@
+zabbix_export:
+  version: '6.4'
+  template_groups:
+    - uuid: 7df96b18c230490a9a0a9e2307226338
+      name: Templates
+  templates:
+    - uuid: 5d4ceb786fb44250bb37cf8e3056de0c
+      template: kaspersky_security_mail_gateway_snmp_2.0
+      name: kaspersky_security_mail_gateway_snmp_2.0
+      description: |
+        Written by Rayg00nchik
+        
+        Kaspersky Mail Secure Gateway
+        OID MIB 
+        https://support.kaspersky.com/KSMG/2.0/en-US/181254.htm
+        
+        Before using:
+        
+        1. Connect to your KSMG server via SSH and add the following strings to the file /etc/snmp/snmpd.conf to make connections through the UNIX socket:
+        
+        master agentx
+        agentXSocket unix:/var/run/agentx-master.socket
+        agentXPerms 770 770 kluser klusers
+        
+        2. Check the settings in /etc/snmp/snmpd.conf
+        
+        #com2sec notConfigUser  default       public
+        com2sec notConfigUser  default       <ksmg-community-name>
+        
+        view    systemview    included   .1.3.6.1.2.1.1
+        view    systemview    included   .1.3.6.1.2.1.25.1.1
+        view    systemview    included   .1.3.6.1.4.1.
+        
+        If there are no such strings, add it!
+        
+        Change <ksmg-community-name> to any name you want to use
+        
+        3. Restart the snmpd service. To do it, run the following command:
+        systemctl restart snmpd
+        
+        4. Add the snmpd service to autostart. To do it, run the following command:
+        systemctl enable snmpd
+        
+        The snmpd service will be configured. 
+        To enable the application to operate over the SNMP protocol, enable use of SNMP in the application web interface:
+        https://support.kaspersky.com/KSMG/2.0/ru-RU/91248.htm
+        
+        5. Check the availability of snmptd from your zabbix server\proxy like:
+        
+        snmpwalk -v2c -c <ksmg-community-name> <you-ksmg-server-ip-address> .1.3.6.1.4.1.23668.1735.2.1.2.0
+        
+        If you don't have "snmpwalk" - just install it according to your operating system.
+        
+      vendor:
+        name: GITHUB
+        version: 6.4-0
+      groups:
+        - name: Templates
+      items:
+        - uuid: 23a34ef636494ca0a666b3e37917d773
+          name: 'Number of messages with deleted attachments'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.5.3.0
+          key: actionStatistics.attachmentDeletedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: a5d0029919374eb186e402bac71e701f
+          name: 'Number of deleted messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.5.4.0
+          key: actionStatistics.deletedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: b5c53bcde3ef466fbdce7f7bdedb2b84
+          name: 'Number of disinfected messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.5.2.0
+          key: actionStatistics.disinfectedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: d589f413cbfc441197a9d081a9ef30c0
+          name: 'Number of messages without any check'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.5.1.0
+          key: actionStatistics.notDetectedMessages
+        - uuid: 5a24eb01e6c44230b546dc528bbaa0d9
+          name: 'Number of quarantined messages with processing delay'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.5.6.0
+          key: actionStatistics.quarantinedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 5e6d099698584ad3937dbd21331e11dc
+          name: 'Number of rejected messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.5.5.0
+          key: actionStatistics.rejectedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: b3090eadb09e422fb13592897dd8a206
+          name: 'Number of non checked messages whith any modules error'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.5.7.0
+          key: actionStatistics.skippedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 46642c32886347da991adc7fa6a98239
+          name: 'The number of messages not checked by any module due to unavailability of application databases'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.5.8.0
+          key: actionStatistics.unprocessedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: b84da9696ab7413cad3b846e39006363
+          name: 'Number of messages without fishing'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.10.1.0
+          key: antiphishingStatistics.notDetectedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: a53064c6d8a54bef99bbe2929282d104
+          name: 'Number of messages non cheked fishing'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.10.5.0
+          key: antiphishingStatistics.notScannedSettingsMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: e46fd166216e4a57820029219b83defa
+          name: 'Number of messages during the processing of which spam errors occurred with fishing'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.10.6.0
+          key: antiphishingStatistics.notScannedViolationsMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: a6bfcb90a7ca46ac8c5daa9dfb898426
+          name: 'Number of messages with fishing'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.10.2.0
+          key: antiphishingStatistics.phishingMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 0c94298cc82f46f69a24c528c40d0edc
+          name: 'Number of messages during the processing of which fishing errors occurred'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.10.4.0
+          key: antiphishingStatistics.scanErrors
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: fe83a74e27c8441e855f62d34dc61b7c
+          name: 'Number of messages with spam sent to quarantined'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.3.5.0
+          key: antispamStatistics.antiSpamQuarantinedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: a6a8cfa4fae04455bfebab4e56b380a7
+          name: 'Number of mass mail messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.3.9.0
+          key: antispamStatistics.massMail
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 6660649239e64e149669e47981c9cc3e
+          name: 'Number of messages without spam'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.3.1.0
+          key: antispamStatistics.notDetectedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: c624d2bf4b7e45429aa4176f5ad60b8f
+          name: 'Number of messages non checked spam'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.3.7.0
+          key: antispamStatistics.notScannedSettingsMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 55d40d87acc34fb8bbef4dca1163d8e7
+          name: 'Number of messages during the processing of which spam errors occurred with bases or license'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.3.8.0
+          key: antispamStatistics.notScannedViolationsMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: c83c6f2dd5a94cd189c6c94a4ae2a357
+          name: 'Number of messages with probable spam'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.3.3.0
+          key: antispamStatistics.probableSpamMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 8e9b55fa316540319ffa8144a9a2b0d4
+          name: 'Number of messages during the processing of which spam errors occurred'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.3.6.0
+          key: antispamStatistics.scanErrors
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 31ed096ec2aa48b58d91e6c34aa17b27
+          name: 'Number of messages with spam'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.3.2.0
+          key: antispamStatistics.spamMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 2b79976685b04b4cadef08a17efa6fb4
+          name: 'Number of messages with macroses'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.2.5.0
+          key: antivirusStatistics.docWithMacroMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: a6d04895997f40c3bf249f126f31e44b
+          name: 'Number of encrypted messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.2.4.0
+          key: antivirusStatistics.encryptedMessages
+          description: 'Number of encrypted messages'
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 3674db1b38cc41cc9f8b457c9028149b
+          name: 'Number of infected messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.2.2.0
+          key: antivirusStatistics.infectedMessages
+          description: 'Number of messages with threats'
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 038ed33f477e462286004275b2e0207b
+          name: 'Number of clean messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.2.1.0
+          key: antivirusStatistics.notDetectedMessages
+          description: 'Number of messages without threats'
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 85a8ffeca80e427f83612d5b6ed921f2
+          name: 'Number of non check messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.2.7.0
+          key: antivirusStatistics.notScannedSettingsMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: e584971340d24e758d2037499700f6db
+          name: 'Number of non scanned messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.2.8.0
+          key: antivirusStatistics.notScannedViolationsMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: e34e030751bb405cbc06873bda63d1a2
+          name: 'Number of messages in storage'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.1.1.0
+          key: backupStatistics.messageCount
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 2977857076724c55a0fd55ebb0ad83ac
+          name: 'Storage size'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.1.2.0
+          key: backupStatistics.usedSpace
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: df3dbcd3854441bf88d146a0cef0cc8a
+          name: 'Number of messages without spam content'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.4.1.0
+          key: cfStatistics.notDetectedMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: e92d9dba07f242f78db450adb202ad70
+          name: 'Number of messages without contenf filter check'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.4.5.0
+          key: cfStatistics.notScannedSettingsMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: f00992f4ebbf4b30ac0992cf7350a449
+          name: 'Number of messages during the processing of which content errors occurred with bases or license'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.4.6.0
+          key: cfStatistics.notScannedViolationsMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 2737f612ddec4396868173264fceaabf
+          name: 'Number of messages with denied attachments names'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.4.4.0
+          key: cfStatistics.prohibitedNameMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 2130cea8e88d40efab222e6e8d37d232
+          name: 'Number of messages with denied attachments'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.4.3.0
+          key: cfStatistics.prohibitedTypeMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: ab5b34fa656d4bccb284a23a0374bc5d
+          name: 'Number of messages with size exceeded'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.4.2.0
+          key: cfStatistics.sizeExceededMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 5842fe77890c4f3eb7af8ea8946bc1ce
+          name: 'Number of messages with malicious links'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.12.3.0
+          key: linksScanning.linksScanningMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: f9ea3e84a31c4d1788b2570f2c12d5d1
+          name: 'Number of messages without malicious links'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.12.1.0
+          key: linksScanning.notDetectedMessages
+          trends: '0'
+          value_type: CHAR
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 5c22567ca8674d20b7e7be077d298f9b
+          name: 'Number of unverified messages with links due to issues'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.12.6.0
+          key: linksScanning.notScannedViolationsMessages
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 498818c8857040fc85348b716cb4a639
+          name: 'Number of messages during the processing of which errors occurred'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.12.4.0
+          key: linksScanning.scanErrors
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 8bcccb3341734a4eb0bce6f894509d9b
+          name: 'License status'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.8.5.0
+          key: productinfoStatistics.licenseStatus
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: e7232df152224d09a4f9ebbeac414b97
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/productinfoStatistics.licenseStatus,600s)'
+              name: 'No SNMP Data Retrieved'
+              priority: HIGH
+        - uuid: f585ffb942c74e948da340e2f319d18d
+          name: 'Number of content filter rejected size'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.5.0
+          key: reportsummaryStatistics.contentFilteringDetectsNumber
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 437457ecd9d94830a8542095c61102af
+          name: 'Size rejected content filter messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.6.0
+          key: reportsummaryStatistics.contentFilteringDetectsSize
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 0bdd122b19504e43b31013a55068c0dd
+          name: 'Number of non detected messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.9.0
+          key: reportsummaryStatistics.notDetectedNumber
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 6e49a9dd34f1432aaca122740632c8ee
+          name: 'Size non detected messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.10.0
+          key: reportsummaryStatistics.notDetectedSize
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: e2875429be8541db9b8e2f331fe8848f
+          name: 'Number of non scaned messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.7.0
+          key: reportsummaryStatistics.notScannedNumber
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: a682147a56614f81b7c191b14fa64fbb
+          name: 'Size non scanned messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.8.0
+          key: reportsummaryStatistics.notScannedSize
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 442f85c54a5f4d51b780a31d070b14a2
+          name: 'Number of fishing messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.13.0
+          key: reportsummaryStatistics.phishingNumber
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: cbba259479464462af42aac93d3d4095
+          name: 'Size fishing messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.14.0
+          key: reportsummaryStatistics.phishingSize
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 401b60003ac7499d823f64348808117c
+          name: 'Number of smap messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.3.0
+          key: reportsummaryStatistics.spamNumber
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: c825c685892945a6b2191110aa8473a2
+          name: 'Spam messages size'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.4.0
+          key: reportsummaryStatistics.spamSize
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: cb8a3cb6b37a48d091b1fabf9643143d
+          name: 'Number of messages with threats'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.1.0
+          key: reportsummaryStatistics.threatNumber
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: caf86c42b1384b809a85e5778f0bbab6
+          name: 'Threat message size'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.2.0
+          key: reportsummaryStatistics.threatSize
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 1bac82f26e0c46448bdcb782a0712297
+          name: 'Number of all messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.11.0
+          key: reportsummaryStatistics.totalNumber
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 993fe0e5ce7441f4a55833613360894b
+          name: 'Size all messages'
+          type: SNMP_AGENT
+          snmp_oid: 1.3.6.1.4.1.23668.1735.2.9.12.0
+          key: reportsummaryStatistics.totalSize
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 515e6c579b61487b92bc0521f5c68ff6
+          name: 'Update error'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.10]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: 74548b73d17a4d9a92fbcccca5cbdb63
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.10],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.10],120s)=1'
+              name: 'KSMG database update error'
+              priority: AVERAGE
+              manual_close: 'YES'
+        - uuid: 95b3c04d6c1f4ce2be9dbc9109f3dd23
+          name: 'Compilation antispam DB error'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.30]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: 43d08ecd3a9b4fcc8433c3040b939755
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.30],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.30],120s)=1'
+              name: 'KSMG Compilation antispam DB error'
+              priority: WARNING
+              manual_close: 'YES'
+        - uuid: 91c7648da29d49669b710c6996b51a13
+          name: 'Antivir DB outdated'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.100]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: 5d8d52b692e3484cb50d38a1e0986ca4
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.100],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.100],120s)=1'
+              name: 'KSMG Antivir DB outdated'
+              priority: WARNING
+              manual_close: 'YES'
+        - uuid: 6e5de1f458024b86b329bce58b88d9d1
+          name: 'Antivir DB obsoleted'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.120]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: ce18888dd3904bb3820a011e78c1bf72
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.120],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.120],120s)=1'
+              name: 'KSMG Antivir DB obsoleted'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 58ccdff88fb5493d9800c3e546524304
+          name: 'Antispam DB outdated'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.130]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: 28d0e8235cda42f6accb47ff568f507e
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.130],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.130],120s)=1'
+              name: 'KSMG Antispam DB outdated'
+              priority: AVERAGE
+              manual_close: 'YES'
+        - uuid: 06f0410c8b4d4a959a76f19c7a9ed76f
+          name: 'Antispam DB obsoleted'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.140]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: 19eb66af19694cb595e7d9de4d4ed6d5
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.140],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.140],120s)=1'
+              name: 'KSMG Antispam DB obsoleted'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 2ee6ed8ef0b046659557423c6caa77b2
+          name: 'Antifishing DB outdated'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.150]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          triggers:
+            - uuid: f90fb74b16d44cb290627bec4d7374d8
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.150],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.150],120s)=1'
+              name: 'KSMG Antifishing DB outdated'
+              priority: WARNING
+              manual_close: 'YES'
+        - uuid: bcd6eb20c671410191b28a9bcaee8928
+          name: 'Antifishing DB obsoleted'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.160]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: e179986ec7214d89b568a747f5987968
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.160],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.160],120s)=1'
+              name: 'KSMG antifishing DB obsoleted'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 42970fcb20294cc5af6bf09b95e6db42
+          name: 'Error adding backup'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.200]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 5be86d1c428f4917bb014bb0eb51b25c
+          name: 'Error deleting backup'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.210]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: d2a7416373c348c2bdae87acf20828b1
+          name: 'Storage is full'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.220]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: b283fd162f714a89b0d24342aa5b631a
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.220],1s)=0'
+              name: 'KSMG Storage is full'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 170f0683344e4e3e9acdc122b878026d
+          name: 'License installed'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.300]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: fc001049892947a38a971a42fdf3140f
+          name: 'License deleted'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.310]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 5b3895da816241848cf84a350f6d0d0c
+          name: 'License soon expired'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.320]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: d328446822d44f1986098284a3d29122
+          name: 'License expired'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.330]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: afa2217de90b4946a0b3e405237011f1
+          name: 'Trial license expired'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.340]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: 9975b33d573b497a8ed274832d2e18ac
+          name: 'License blacklisted'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.350]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: f934672f9fa84b13b5b416b7f140105a
+          name: 'License updated'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.360]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+        - uuid: c7c292211dae4b23b30527bed0d1e1fc
+          name: 'Daemon crashed'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.400]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: a3c318d7d72f45b3875547d7d8328353
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.400],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.400],120s)=1'
+              name: 'KSMG Daemon crashed'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: a3615c6f929d4049868fde7a1d496bac
+          name: 'Daemon restarted'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.410]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: d5bd8dfc228b484fa2891a9b94bd982e
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.410],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.410],120s)=1'
+              name: 'KSMG Daemon restarted'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 218b053a13e546cbb7eaea2e27a25b5d
+          name: 'Threat detected'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.510]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: 68004a361c99411c943d279db1c9a984
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.510],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.510],120s)=1'
+              name: 'KSMG Threat detected'
+              priority: WARNING
+              manual_close: 'YES'
+        - uuid: 59134dae65484a348c0fb613a7574719
+          name: 'Antivir module error'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.520]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: 888be0018bc34741817ab8eb511e78c1
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.520],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.520],120s)=1'
+              name: 'KSMG Antivir module error'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 403f39813109429db7605928491dbde3
+          name: 'Antispam module error'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.530]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: b54d97042d70472fade86e7f427b1b63
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.530],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.530],120s)=1'
+              name: 'KSMG Antispam module error'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: 8305a2e1c0ec4bdf84a34ab92e39f1d1
+          name: 'Cluster consistency error'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.600]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: 519fb2fb94a543d9b87ffbb75e354feb
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.600],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.600],120s)=1'
+              name: 'KSMG Cluster consistency error'
+              priority: HIGH
+              manual_close: 'YES'
+        - uuid: a5739f764d41473094da712db8430ce9
+          name: 'Cluster emergency state'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.610]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: 0a5e06e75e214ad1a989e4014d609c59
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.610],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.610],120s)=1'
+              name: 'KSMG Cluster emergency state'
+              priority: DISASTER
+              manual_close: 'YES'
+        - uuid: a4f50e6a552444478444b92dea07c040
+          name: 'Cluster sync error'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.620]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: d25ff85d449042ec90e8725dab004e52
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.620],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.620],120s)=1'
+              name: 'KSMG cluster sync error'
+              priority: AVERAGE
+              manual_close: 'YES'
+        - uuid: b53b889940454d4dac4bec8611759877
+          name: 'KSN connection status changed'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.700]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+          triggers:
+            - uuid: 1149d68549774db194bdc898a10186de
+              expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.700],1s)=0'
+              recovery_mode: RECOVERY_EXPRESSION
+              recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.700],120s)=1'
+              name: 'KSMG KSN connection status changed'
+              priority: INFO
+              manual_close: 'YES'
+        - uuid: 4ecbfa3660c549b18282efb1ec346bd6
+          name: 'Ldap sync'
+          type: SNMP_TRAP
+          key: 'snmptrap[23668.1735.1.910]'
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          tags:
+            - tag: Application
+              value: KSMG
+  triggers:
+    - uuid: 5e0fedc8be364ff3848056cd7630b9e4
+      expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.350],1s)=0'
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.300],1s)=0'
+      name: 'KSMG License blacklisted'
+      priority: DISASTER
+      manual_close: 'YES'
+    - uuid: 7e018719ea714d5dbb29b048cda39ada
+      expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.310],1s)=0'
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.300],1s)=0'
+      name: 'KSMG License deleted'
+      priority: HIGH
+      manual_close: 'YES'
+    - uuid: 96e102fc462e4031ba9a9a2a642bf557
+      expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.330],1s)=0'
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.300],1s)=0'
+      name: 'KSMG License expired'
+      priority: DISASTER
+      manual_close: 'YES'
+    - uuid: fd17308d59384712a0c094eca7ecb0a9
+      expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.320],1s)=0'
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.300],1s)=0'
+      name: 'KSMG License soon expired'
+      priority: HIGH
+      manual_close: 'YES'
+    - uuid: 1b4823307f2c4e0b8ab27a2dbbf7f512
+      expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.340],1s)=0'
+      recovery_mode: RECOVERY_EXPRESSION
+      recovery_expression: 'nodata(/kaspersky_security_mail_gateway_snmp_2.0/snmptrap[23668.1735.1.300],1s)=0'
+      name: 'KSMG trial license expired'
+      priority: DISASTER
+      manual_close: 'YES'
