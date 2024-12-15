@@ -4,6 +4,7 @@
 <p>
 This is another repository containing Zabbix templates and tools for monitoring IT infrastructure including: servers, web-sites, network devices, hypervisors and other things. 
 The templates presented here have been successfully tested and used in at least one ~~bloody~~ enterprise. 
+
 ##
 
 <p>
