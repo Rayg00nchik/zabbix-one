@@ -41,14 +41,14 @@ agentXPerms 770 770 kluser klusers
 2. Check the settings in `/etc/snmp/snmpd.conf`:
 ```     
 #com2sec notConfigUser  default       public
-com2sec notConfigUser  default       <ksmg-community-name>
+com2sec notConfigUser  default       "ksmg-community-name"
 
 view    systemview    included   .1.3.6.1.2.1.1
 view    systemview    included   .1.3.6.1.2.1.25.1.1
 view    systemview    included   .1.3.6.1.4.1.
 ```
 <p>If there are no such strings, add it!</p>
-<p>Change \<ksmg-community-name\> to any name you want to use</p>
+<p>Change "ksmg-community-name" to any name you want to use</p>
 
 3. Restart the snmpd service. To do it, run the following command:
 ```    
@@ -64,7 +64,7 @@ systemctl enable snmpd
 
 5. Check the availability of snmptd from your zabbix server\proxy like:
 ```        
-snmpwalk -v2c -c <ksmg-community-name> <you-ksmg-server-ip-address> .1.3.6.1.4.1.23668.1735.2.1.2.0
+snmpwalk -v2c -c "ksmg-community-name" "you-ksmg-server-ip-address" .1.3.6.1.4.1.23668.1735.2.1.2.0
 ```
 If you don't have "snmpwalk" - just install it according to your operating system.
 
