@@ -48,7 +48,7 @@ view    systemview    included   .1.3.6.1.2.1.25.1.1
 view    systemview    included   .1.3.6.1.4.1.
 ```
 <p>If there are no such strings, add it!</p>
-<p>Change `\<ksmg-community-name\>` to any name you want to use.</p>
+<p>Change ` \<ksmg-community-name\> ` to any name you want to use</p>
 
 3. Restart the snmpd service. To do it, run the following command:
 ```    
